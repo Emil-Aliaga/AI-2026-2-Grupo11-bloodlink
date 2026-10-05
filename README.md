@@ -31,6 +31,6 @@ Resultados de referencia: semillas 2026–2055, 30 solicitudes por escenario y 3
 
 **IA generativa:** se utilizó como apoyo para estructurar código, documentación y pruebas. El equipo revisó y modificó la simulación, FEFO, control de vencimiento, agentes, métricas y comparación experimental.
 
-**Roles:** Jhonn Eusebio — simulación y stock/FEFO · Emil Aliaga — agentes y experimentación · Gianpiere Maqui — interfaz y despliegue.
+**Roles:** Jhonn Eusebio — simulación y stock/FEFO · Emil Aliaga — Métricas y agentes · Gianpiere Maqui — agentes y experimentación.
 
 **Fuentes:** [Minsa — donación de sangre en el Perú](https://www.gob.pe/institucion/minsa/noticias/1156362-tu-gesto-puede-hacer-la-diferencia-solo-el-1-36-de-la-poblacion-en-el-peru-ha-donado-sangre) · [Minsa — campaña para hospitales de Lima y Callao](https://www.gob.pe/institucion/minsa/noticias/1346703-minsa-recauda-218-unidades-de-sangre-para-654-pacientes-en-campana-conjunta-con-la-atu).
