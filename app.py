@@ -17,7 +17,7 @@ st.info(
 
 st.markdown(
     """
-**Problema real.** En escenarios de alta demanda, responsables logísticos deben distribuir un stock limitado de unidades de sangre entre hospitales con solicitudes de distinta prioridad, plazo y distancia.
+En escenarios de alta demanda, responsables logísticos deben distribuir un stock limitado de unidades de sangre entre hospitales con solicitudes de distinta prioridad, plazo y distancia.
 
 **Comparación del hito.** FIFO (modo base) → agente basado en objetivos → agente basado en utilidad. Los tres reciben exactamente el mismo escenario y se comparan con la misma métrica principal.
     """
@@ -183,26 +183,3 @@ with tab3:
     else:
         st.caption("Presiona «Ejecutar experimento» para obtener la tabla de varias corridas con los parámetros actuales.")
 
-with tab4:
-    st.markdown(
-        """
-### Qué representa cada estrategia
-- **FIFO (base):** atiende primero la solicitud que llegó primero; no usa prioridad.
-- **Agente basado en objetivos:** persigue una meta explícita: priorizar P1 y, dentro de la misma prioridad, el plazo más próximo.
-- **Agente basado en utilidad:** puntúa cada asignación factible usando prioridad, urgencia, cercanía al vencimiento, distancia e impacto sobre el stock.
-
-### Reglas comunes para una comparación justa
-- Los tres agentes ven únicamente solicitudes que ya llegaron.
-- FIFO y Objetivos usan el banco factible más cercano.
-- Los lotes se consumen mediante **FEFO** (primero vence, primero sale).
-- No se permite usar un lote ya vencido.
-- La compatibilidad sanguínea está simplificada a **tipo exacto** en esta Parte 1.
-
-### Qué debe poder explicar el equipo
-1. Dónde está la política FIFO, la de objetivos y la función de utilidad.
-2. Por qué todos reciben el mismo escenario y la misma semilla.
-3. Por qué una técnica gana la métrica principal en sus corridas.
-4. Qué esperan que ocurra si cambia la proporción P1 o los pesos de utilidad.
-5. Qué limitaciones impiden usar este prototipo para decisiones clínicas reales.
-        """
-    )
