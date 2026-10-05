@@ -15,8 +15,6 @@
 
 Resultados de referencia: semillas 2026–2055, 30 solicitudes por escenario, 30 % P1 y pesos de utilidad 0.45/0.25/0.15/0.10/0.05. La aplicación permite repetir las corridas y modificar parámetros en vivo.
 
-**Cómo ejecutarlo.** Local: `pip install -r requirements.txt` y luego `streamlit run app.py`. En Streamlit Community Cloud: crear el repositorio `AI-2026-2-Equipo##-bloodlink`, subir estos archivos, conectar la rama `main` y seleccionar `app.py` como archivo principal.
-
 **Uso de IA generativa.** Se utilizó IA generativa como apoyo para estructurar una primera versión del código, documentación y pruebas. El equipo revisó, modificó y validó la lógica de simulación, control de vencimiento, FEFO, trazabilidad, métricas y comparación experimental. Cada integrante debe poder ubicar y explicar el código presentado.
 
 **Roles.** Integrante 1 — Lógica de simulación · Integrante 2 — Agentes y experimentación · Integrante 3 — Interfaz y despliegue.
