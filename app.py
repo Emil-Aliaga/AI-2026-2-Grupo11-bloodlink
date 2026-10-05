@@ -10,56 +10,22 @@ from simulation import generate_scenario, request_table, scenario_stock_table
 st.set_page_config(page_title="BLOODLINK IA", page_icon="🩸", layout="wide")
 
 st.title("🩸 BLOODLINK IA")
-st.caption("Avance 1 · Simulador inteligente de distribución logística de sangre")
-
-st.info(
-    "Prototipo académico con datos sintéticos inspirado en la coordinación logística entre bancos de sangre "
-    "y hospitales del Perú. Las prioridades P1/P2/P3 ya vienen asignadas por el hospital; BLOODLINK no realiza "
-    "diagnóstico, triage ni decisiones clínicas."
-)
+st.caption("Avance 1 · Simulador de distribución logística de sangre")
 
 st.markdown(
     """
-**Problema.** Cuando el stock es limitado, un responsable logístico debe decidir qué solicitud atender primero
-y desde qué banco despacharla, considerando prioridad, plazo, distancia y vencimiento del inventario.
+**Problema:** distribuir stock limitado de sangre entre hospitales con solicitudes de distinta prioridad,
+plazo, distancia y vencimiento.
 
-**Tres formas de resolverlo:** **FIFO (base)** → **agente basado en objetivos** → **agente basado en utilidad**.
-Las tres reciben exactamente el mismo escenario y se comparan con la misma métrica principal.
+**Comparación:** **FIFO (base)** → **Agente de objetivos** → **Agente de utilidad**.
 """
 )
 
-flow1, flow2, flow3 = st.columns(3)
-flow1.markdown("**👁️ Percibe**  \nSolicitudes · stock · hora · vencimientos")
-flow2.markdown("**🧠 Decide**  \nFIFO · objetivo · utilidad")
-flow3.markdown("**🚚 Actúa**  \nAsigna stock · despacha · registra resultado")
-
 with st.sidebar:
     st.header("Escenario")
-    seed = st.number_input(
-        "Semilla",
-        min_value=1,
-        max_value=999999,
-        value=2026,
-        step=1,
-        help="Permite reproducir exactamente el mismo escenario."
-    )
-    n_requests = st.slider(
-        "Solicitudes",
-        12,
-        60,
-        30,
-        1,
-        help="Aumenta la presión sobre el inventario y el canal de despacho."
-    )
-    p1_ratio = st.slider(
-        "Proporción P1",
-        0.10,
-        0.70,
-        0.30,
-        0.05,
-        help="P1 = prioridad alta, P2 = media y P3 = baja. La prioridad ya viene asignada por el hospital."
-    )
-    st.caption("💡 Prueba de estrés: aumenta P1 o el número de solicitudes y vuelve a comparar.")
+    seed = st.number_input("Semilla", min_value=1, max_value=999999, value=2026, step=1)
+    n_requests = st.slider("Solicitudes", 12, 60, 30, 1)
+    p1_ratio = st.slider("Proporción P1", 0.10, 0.70, 0.30, 0.05)
 
     st.header("Agente de utilidad")
     w_priority = st.slider("Peso prioridad", 0.0, 1.0, 0.45, 0.05)
@@ -75,9 +41,6 @@ with st.sidebar:
         "transport": w_transport,
         "stock": w_stock,
     }
-    st.caption(
-        f"Suma de pesos: {sum(weights.values()):.2f}. Son pesos relativos y pueden modificarse en vivo."
-    )
 
 scenario = generate_scenario(
     seed=int(seed),
@@ -90,10 +53,10 @@ comparison, details = compare_one_scenario(scenario, weights)
 def draw_map():
     fig, ax = plt.subplots(figsize=(7, 5))
     for bank in scenario.banks:
-        ax.scatter(bank.x, bank.y, marker="s", s=140, label=None)
+        ax.scatter(bank.x, bank.y, marker="s", s=140)
         ax.text(bank.x + 0.25, bank.y + 0.25, bank.bank_id, fontsize=9)
     for hospital in scenario.hospitals:
-        ax.scatter(hospital.x, hospital.y, marker="o", s=100, label=None)
+        ax.scatter(hospital.x, hospital.y, marker="o", s=100)
         ax.text(hospital.x + 0.25, hospital.y + 0.25, hospital.hospital_id, fontsize=9)
     ax.set_xlim(0, 20)
     ax.set_ylim(0, 20)
@@ -114,9 +77,11 @@ def outcome_for_request(df: pd.DataFrame, request_id: str, label: str) -> dict:
             "Límite (h)": "—",
             "A tiempo": "—",
         }
+
     r = row.iloc[0]
     arrival = "—" if pd.isna(r.get("arrival_time_h")) else f"{float(r['arrival_time_h']):.2f}"
     due = "—" if pd.isna(r.get("due_time_h")) else f"{float(r['due_time_h']):.2f}"
+
     return {
         "Estrategia": label,
         "Estado": r.get("status", "—"),
@@ -126,18 +91,14 @@ def outcome_for_request(df: pd.DataFrame, request_id: str, label: str) -> dict:
     }
 
 
-st.subheader("Comparación del avance 1")
 col1, col2, col3 = st.columns(3)
 col1.metric("Modo base", "FIFO")
-col2.metric("Técnica 1", "Agente de objetivos")
-col3.metric("Técnica 2", "Agente de utilidad")
-st.caption(
-    "Métrica principal común: % de solicitudes P1 atendidas dentro del plazo. "
-    "P1 = prioridad alta, P2 = media, P3 = baja."
-)
+col2.metric("Técnica 1", "Objetivos")
+col3.metric("Técnica 2", "Utilidad")
+st.caption("Métrica principal: % de solicitudes P1 atendidas dentro del plazo.")
 
 tab1, tab2, tab3 = st.tabs(
-    ["1 · Escenario", "2 · Decisiones y comparación", "3 · Experimento"]
+    ["1 · Escenario", "2 · Comparar", "3 · Experimento"]
 )
 
 with tab1:
@@ -151,7 +112,6 @@ with tab1:
     c1, c2 = st.columns([1, 1])
     with c1:
         st.pyplot(draw_map(), clear_figure=True)
-        st.caption("Mapa esquemático: las coordenadas son simuladas y se usan para calcular distancia y tiempo.")
     with c2:
         st.subheader("Stock inicial")
         st.dataframe(
@@ -161,7 +121,7 @@ with tab1:
             hide_index=True,
         )
 
-    st.subheader("Solicitudes del escenario")
+    st.subheader("Solicitudes")
     st.dataframe(
         request_table(scenario),
         use_container_width=True,
@@ -170,11 +130,12 @@ with tab1:
     )
 
 with tab2:
-    st.subheader("¿Cuál estrategia atiende mejor las P1 a tiempo?")
+    st.subheader("Resultados del escenario")
 
     fifo_value = float(
         comparison.loc[comparison["Técnica"] == "FIFO (base)", "p1_on_time_rate"].iloc[0]
     )
+
     metric_cols = st.columns(3)
     for col, technique in zip(
         metric_cols,
@@ -182,7 +143,7 @@ with tab2:
     ):
         row = comparison[comparison["Técnica"] == technique].iloc[0]
         value = float(row["p1_on_time_rate"])
-        delta = None if technique == "FIFO (base)" else f"{value - fifo_value:+.2f} pp vs FIFO"
+        delta = None if technique == "FIFO (base)" else f"{value - fifo_value:+.2f} pp"
         col.metric(technique, f"{value:.2f}%", delta)
 
     show = comparison.rename(
@@ -200,26 +161,16 @@ with tab2:
     winner_idx = comparison["p1_on_time_rate"].idxmax()
     winner = comparison.loc[winner_idx, "Técnica"]
     winner_value = float(comparison.loc[winner_idx, "p1_on_time_rate"])
-    best_waste_idx = comparison["wasted_units"].idxmin()
-    best_waste = comparison.loc[best_waste_idx, "Técnica"]
-    best_waste_value = float(comparison.loc[best_waste_idx, "wasted_units"])
-
-    st.success(
-        f"En este escenario, **{winner}** lidera la métrica principal con **{winner_value:.2f}%** de P1 a tiempo."
-    )
-    st.caption(
-        f"Trade-off: **{best_waste}** presenta el menor desperdicio ({best_waste_value:.0f} unidades). "
-        "Una estrategia puede ganar la métrica principal sin dominar todas las métricas secundarias."
-    )
+    st.success(f"{winner}: {winner_value:.2f}% de P1 atendidas dentro del plazo.")
 
     st.divider()
-    st.subheader("🔎 Caso crítico: una decisión donde la estrategia sí importa")
+    st.subheader("Caso P1")
 
-    critical_ids = []
     fifo_df = details["fifo"]
     goal_df = details["goal"]
     utility_df = details["utility"]
 
+    critical_ids = []
     for req in scenario.requests:
         if req.priority != "P1":
             continue
@@ -229,18 +180,16 @@ with tab2:
         u = utility_df[utility_df["request_id"] == rid]
         if f.empty or g.empty or u.empty:
             continue
+
         fifo_on_time = bool(f.iloc[0]["on_time"])
         goal_on_time = bool(g.iloc[0]["on_time"])
         utility_on_time = bool(u.iloc[0]["on_time"])
+
         if (not fifo_on_time) and (goal_on_time or utility_on_time):
             critical_ids.append(rid)
 
     if critical_ids:
-        critical_id = st.selectbox(
-            "Solicitud P1 para explicar",
-            critical_ids,
-            help="Se muestran casos en los que FIFO no llega a tiempo y al menos un agente inteligente sí."
-        )
+        critical_id = st.selectbox("Solicitud P1", critical_ids)
         critical_table = pd.DataFrame(
             [
                 outcome_for_request(fifo_df, critical_id, "FIFO (base)"),
@@ -249,18 +198,12 @@ with tab2:
             ]
         )
         st.dataframe(critical_table, use_container_width=True, hide_index=True)
-        st.info(
-            "Este caso sirve para explicar con números **por qué** una técnica aporta valor frente al modo base, "
-            "no solo para mostrar una tabla final."
-        )
     else:
-        st.caption(
-            "En esta semilla no apareció un P1 donde FIFO falle y otro agente llegue a tiempo. "
-            "Cambia la semilla o aumenta la proporción P1 para generar un escenario más exigente."
-        )
+        st.write("No hay un caso P1 diferencial con los parámetros actuales.")
 
     st.divider()
-    st.subheader("Trazabilidad de decisiones")
+    st.subheader("Trazabilidad")
+
     strategy = st.selectbox(
         "Estrategia",
         ["fifo", "goal", "utility"],
@@ -289,6 +232,7 @@ with tab2:
             "decision_reason": "Razón",
         }
     )
+
     preferred_cols = [
         "Solicitud",
         "Hospital",
@@ -305,6 +249,7 @@ with tab2:
         "Utilidad",
         "Razón",
     ]
+
     st.dataframe(
         detail[[c for c in preferred_cols if c in detail.columns]],
         use_container_width=True,
@@ -319,7 +264,7 @@ with tab2:
         ].copy()
 
         if not explainable.empty:
-            st.subheader("🧠 ¿Por qué el agente de utilidad eligió esa opción?")
+            st.subheader("Descomposición de utilidad")
             explain_id = st.selectbox(
                 "Solicitud atendida",
                 explainable["request_id"].tolist(),
@@ -340,35 +285,15 @@ with tab2:
             )
             st.write(
                 f"**Utilidad total:** {float(r['utility']):.4f} · "
-                f"**Banco elegido:** {r.get('bank_id', '—')} · "
-                f"**Razón registrada:** {r.get('decision_reason', '—')}"
-            )
-            st.caption(
-                "Los pesos pueden cambiarse en la barra lateral. Esto permite predecir y comprobar "
-                "cómo cambia el comportamiento del agente durante la demostración."
+                f"**Banco:** {r.get('bank_id', '—')}"
             )
 
 with tab3:
-    st.subheader("Experimento con varias corridas")
-    st.write(
-        "Cada corrida genera un escenario diferente. Dentro de cada corrida, FIFO, Objetivos y Utilidad reciben "
-        "exactamente el mismo escenario. Así evitamos comparar estrategias con condiciones distintas."
-    )
-
-    runs = st.slider(
-        "Número de corridas",
-        5,
-        50,
-        30,
-        5,
-        key="runs",
-        help="Más corridas reducen el efecto de un escenario particularmente favorable o desfavorable."
-    )
+    st.subheader("Comparación con varias corridas")
+    runs = st.slider("Número de corridas", 5, 50, 30, 5, key="runs")
 
     if st.button("Ejecutar experimento", type="primary"):
-        with st.spinner(
-            "Ejecutando FIFO, Objetivos y Utilidad sobre los mismos escenarios..."
-        ):
+        with st.spinner("Ejecutando..."):
             summary, raw = run_experiment(
                 n_runs=runs,
                 base_seed=int(seed),
@@ -390,29 +315,17 @@ with tab3:
 
         st.dataframe(show_summary, use_container_width=True, hide_index=True)
         st.bar_chart(
-            show_summary.set_index("Técnica")[
-                ["P1 a tiempo (%)", "Atendidas (%)"]
-            ]
+            show_summary.set_index("Técnica")[["P1 a tiempo (%)", "Atendidas (%)"]]
         )
 
-        best_main = show_summary.loc[
-            show_summary["P1 a tiempo (%)"].idxmax()
-        ]
-        best_waste = show_summary.loc[
-            show_summary["Desperdicio prom."].idxmin()
-        ]
-        fifo_multi = show_summary[
-            show_summary["Técnica"] == "FIFO (base)"
-        ].iloc[0]
+        best_main = show_summary.loc[show_summary["P1 a tiempo (%)"].idxmax()]
+        best_waste = show_summary.loc[show_summary["Desperdicio prom."].idxmin()]
 
         st.success(
-            f"**Resultado de {runs} corridas:** {best_main['Técnica']} lidera P1 a tiempo "
-            f"con {best_main['P1 a tiempo (%)']:.2f}%."
+            f"{best_main['Técnica']}: {best_main['P1 a tiempo (%)']:.2f}% de P1 a tiempo."
         )
         st.write(
-            f"Frente a FIFO ({fifo_multi['P1 a tiempo (%)']:.2f}%), la diferencia del ganador es "
-            f"**{best_main['P1 a tiempo (%)'] - fifo_multi['P1 a tiempo (%)']:+.2f} puntos porcentuales**. "
-            f"El menor desperdicio promedio corresponde a **{best_waste['Técnica']}** "
+            f"Menor desperdicio: **{best_waste['Técnica']}** "
             f"({best_waste['Desperdicio prom.']:.2f} u.)."
         )
 
@@ -421,8 +334,4 @@ with tab3:
             raw.to_csv(index=False).encode("utf-8"),
             "bloodlink_experimento.csv",
             "text/csv",
-        )
-    else:
-        st.caption(
-            "Presiona «Ejecutar experimento» para obtener la tabla comparativa con los parámetros actuales."
         )
