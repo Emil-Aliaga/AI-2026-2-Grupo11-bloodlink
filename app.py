@@ -9,7 +9,7 @@ from simulation import generate_scenario, request_table, scenario_stock_table
 
 st.set_page_config(page_title="Bloodlink + IA", page_icon="🩸", layout="wide")
 
-st.title("🩸 Bloodlink + IA")
+st.title("Bloodlink + IA")
 st.caption("Avance 1 · Simulador de distribución logística de sangre")
 
 st.markdown(
