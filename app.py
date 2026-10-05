@@ -65,8 +65,8 @@ def draw_map():
     return fig
 
 
-# Resumen del hito: exactamente lo que pide la guía.
-st.subheader("Resumen del avance")
+
+st.subheader("Avance 1")
 col1, col2, col3 = st.columns(3)
 col1.metric("Modo base", "FIFO")
 col2.metric("Técnica 1", "Objetivos")
@@ -74,7 +74,7 @@ col3.metric("Técnica 2", "Utilidad")
 st.caption("Métrica principal: porcentaje de solicitudes P1 atendidas dentro del plazo.")
 
 tab1, tab2, tab3, tab4 = st.tabs(
-    ["1 · Escenario", "2 · Comparar", "3 · 30 corridas", "4 · Sustentación"]
+    ["1 · Escenario", "2 · Comparar", "3 · 30 Simulaciones"]
 )
 
 with tab1:
@@ -142,7 +142,7 @@ with tab2:
     st.dataframe(detail[[c for c in preferred_cols if c in detail.columns]], use_container_width=True, height=390, hide_index=True)
 
 with tab3:
-    st.subheader("Experimento reproducible")
+    st.subheader("Experimento")
     st.write(
         "Cada estrategia recibe exactamente los mismos escenarios. Se reportan promedios para evitar concluir a partir de una sola corrida."
     )
