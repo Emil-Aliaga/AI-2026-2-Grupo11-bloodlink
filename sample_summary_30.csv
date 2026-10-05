@@ -1,0 +1,4 @@
+strategy,Técnica,p1_on_time_rate,served_rate,avg_delivery_h,wasted_units,total_distance_km,cpu_ms
+fifo,FIFO (base),31.49,78.56,0.66,23.63,181.28,0.44
+goal,Agente de objetivos,71.59,78.22,0.66,23.67,181.5,0.42
+utility,Agente de utilidad,68.67,80.33,0.69,18.77,206.58,1.7
