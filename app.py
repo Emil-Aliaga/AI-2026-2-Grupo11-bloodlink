@@ -7,9 +7,9 @@ import streamlit as st
 from experiments import compare_one_scenario, run_experiment
 from simulation import generate_scenario, request_table, scenario_stock_table
 
-st.set_page_config(page_title="BLOODLINK IA", page_icon="🩸", layout="wide")
+st.set_page_config(page_title="Bloodlink + IA", page_icon="🩸", layout="wide")
 
-st.title("🩸 BLOODLINK IA")
+st.title("🩸 Bloodlink + IA")
 st.caption("Avance 1 · Simulador de distribución logística de sangre")
 
 st.markdown(
