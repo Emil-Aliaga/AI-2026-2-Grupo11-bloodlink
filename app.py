@@ -146,8 +146,8 @@ with tab3:
     st.write(
         "Cada estrategia recibe exactamente los mismos escenarios. Se reportan promedios para evitar concluir a partir de una sola corrida."
     )
-    runs = st.slider("Número de corridas", 5, 50, 30, 5, key="runs")
-    if st.button("Ejecutar experimento", type="primary"):
+    runs = st.slider("Número de simulaciones", 5, 50, 30, 5, key="runs")
+    if st.button("Ejecutar", type="primary"):
         with st.spinner("Ejecutando FIFO, Objetivos y Utilidad sobre los mismos escenarios..."):
             summary, raw = run_experiment(
                 n_runs=runs,
