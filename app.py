@@ -289,8 +289,8 @@ with tab2:
             )
 
 with tab3:
-    st.subheader("Comparación con varias corridas")
-    runs = st.slider("Número de corridas", 5, 50, 30, 5, key="runs")
+    st.subheader("Comparación con varias simulaciones")
+    runs = st.slider("Cantidad de simulaciones", 5, 50, 30, 5, key="runs")
 
     if st.button("Ejecutar experimento", type="primary"):
         with st.spinner("Ejecutando..."):
