@@ -73,7 +73,7 @@ col2.metric("Técnica 1", "Objetivos")
 col3.metric("Técnica 2", "Utilidad")
 st.caption("Métrica principal: porcentaje de solicitudes P1 atendidas dentro del plazo.")
 
-tab1, tab2, tab3, tab4 = st.tabs(
+tab1, tab2, tab3 = st.tabs(
     ["1 · Escenario", "2 · Comparar", "3 · 30 Simulaciones"]
 )
 
