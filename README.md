@@ -21,4 +21,6 @@ Resultados de referencia: semillas 2026–2055, 30 solicitudes por escenario, 30
 
 **Lenguaje y alcance.** Python + Streamlit + pandas + matplotlib. El prototipo utiliza **datos sintéticos** y compatibilidad exacta por tipo sanguíneo para comparar estrategias de decisión. Es una simulación académica de logística y **no representa un protocolo clínico ni sustituye sistemas hospitalarios reales**.
 
+Demo pública: https://ai-2026-2-grupo11-bloodlinkia-dzlswkgqeeww5bzyaiaj7x.streamlit.app/
+
 Ministerio de Salud del Perú: [Donación de sangre en el Perú](https://www.gob.pe/institucion/minsa/noticias/1156362-tu-gesto-puede-hacer-la-diferencia-solo-el-1-36-de-la-poblacion-en-el-peru-ha-donado-sangre) · [Campaña Minsa–ATU para siete hospitales de Lima y Callao](https://www.gob.pe/institucion/minsa/noticias/1346703-minsa-recauda-218-unidades-de-sangre-para-654-pacientes-en-campana-conjunta-con-la-atu) · [Bancos de sangre autorizados](https://www.gob.pe/institucion/minsa/informes-publicaciones/4483387).
