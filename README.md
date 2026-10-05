@@ -1,4 +1,4 @@
-# BLOODLINK IA | Equipo 11
+# BLOODLINK + IA | Equipo 11
 
 **Demo pública:** https://ai-2026-2-grupo11-bloodlinkia-dzlswkgqeeww5bzyaiaj7x.streamlit.app/
 
